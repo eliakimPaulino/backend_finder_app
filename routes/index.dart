@@ -1,5 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
 
 Response onRequest(RequestContext context) {
-  return Response(body: 'Welcome to the Calorie Counting App!');
+  return Response(body: 'Welcome to the Finder App!');
 }
