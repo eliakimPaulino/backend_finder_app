@@ -8,14 +8,23 @@ import '../data/fake_db.dart';
 import '../models/user.dart';
 import '../utils/crypto.dart';
 
-
 Future<Response> onRequest(RequestContext context) async {
   if (context.request.method != HttpMethod.post) {
     return Response(statusCode: 405, body: 'Use POST');
   }
 
   final body = await context.request.body();
-  final data = jsonDecode(body);
+
+  Map<String, dynamic> data;
+
+  try {
+    data = jsonDecode(body) as Map<String, dynamic>;
+  } catch (_) {
+    return Response.json(
+      statusCode: 400,
+      body: {'error': 'JSON inválido'},
+    );
+  }
 
   final email = data['email'].toString();
   final password = data['password'].toString();
