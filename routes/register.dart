@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 
 import '../data/fake_db.dart';
 import '../models/user.dart';
-import '../utils/crypto.dart';
+import '../lib/auth/utils/crypto.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   if (context.request.method != HttpMethod.post) {
