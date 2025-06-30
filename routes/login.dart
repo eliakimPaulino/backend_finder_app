@@ -12,10 +12,12 @@ Future<Response> onRequest(RequestContext context) async {
     return Response(statusCode: 405, body: 'Use POST');
   }
 
+  // Lê o corpo da requisição
   final body = await context.request.body();
 
   Map<String, dynamic> data;
 
+  // Faz o jsonDecode
   try {
     data = jsonDecode(body) as Map<String, dynamic>;
   } catch (_) {
@@ -25,22 +27,25 @@ Future<Response> onRequest(RequestContext context) async {
   final email = data['email'];
   final password = data['password'] as String?;
 
+  // Valida se email e password existem.
   if (email == null || password == null) {
     return Response.json(statusCode: 400, body: {'error': 'Credenciais ausentes'});
   }
 
+  // Consulta o “banco de dados” (neste caso, uma lista fake fakeUsers).
   final user = fakeUsers.where((u) => u.email == email).isNotEmpty
       ? fakeUsers.firstWhere((u) => u.email == email)
       : null;
 
+  // Valida se a senha bate (comparando hashPassword(password) com o passwordHash salvo).
   if (user == null || user.passwordHash != hashPassword(password)) {
     return Response.json(statusCode: 401, body: {'error': 'Email ou senha inválidos'});
   }
 
+  // Se tudo estiver certo, chama:
   final token = generateJwt(user.id);
 
   return Response.json(
-    statusCode: 200,
     body: {'token': token, 'user': user.toJson()},
   );
 }

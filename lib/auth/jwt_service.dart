@@ -1,6 +1,6 @@
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
-import 'utils/env.dart';
+import 'package:my_project/auth/utils/env.dart';
 
 String generateJwt(String userId) {
   final key = env['JWT_SECRET'];
