@@ -13,6 +13,10 @@ Handler authMiddleware(Handler handler) {
     }
 
     final token = authHeader.substring(8); // Remove o prefixo "Bearer "
+    if (token.isEmpty) {
+      return Response.json(statusCode: 401, body: {'error': 'Token ausente ou inválido'});
+    }
+    
     try {
       final key = env['JWT_SECRET'];
       final claims = verifyJwtHS256Signature(token, key!);
